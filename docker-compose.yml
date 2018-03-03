@@ -1,0 +1,13 @@
+version: '3'
+services:
+  pyvirt:
+    environment:
+     - FLASK_CONFIGURATION=development
+    container_name: pyvirt-api
+    build: .
+    ports:
+     - "9999:80"
+    volumes:
+     - /etc/pki/libvirt:/etc/pki/libvirt
+     - /etc/pki/CA:/etc/pki/CA
+     - ./instance:/app/instance
