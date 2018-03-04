@@ -13,9 +13,9 @@ install:
 script:
   - pipenv run python -m pytest tests/
 before_deploy:
-    - docker build -t dariusbakunas/pyvirt-api:$TRAVIS_TAG .
+    - docker build -t dariusbakunas/pyvirt-api .
 deploy:
     provider: script
     script: scripts/deploy.sh
     on:
-        tags: true
+        branch: master
