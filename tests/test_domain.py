@@ -2,7 +2,12 @@
 import unittest
 import pytest
 import json
+import os
 from .helpers.libvirt_helpers import dict_to_libvirt_obj
+
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
 class MockLibvirt:
@@ -10,7 +15,7 @@ class MockLibvirt:
     Mock libvirt client
     """
     def listAllDomains(self):
-        with open('./data/domains.json') as f:
+        with open(os.path.join(__location__, 'data/domains.json')) as f:
             return json.load(f, object_hook=dict_to_libvirt_obj)
 
 
