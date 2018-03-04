@@ -1,0 +1,9 @@
+sudo: required
+language: python
+services:
+  - docker
+install:
+  - pip install pipenv --upgrade
+  - pipenv install --dev
+script:
+  - pipenv run pytest tests

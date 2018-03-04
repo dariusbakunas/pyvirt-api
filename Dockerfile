@@ -1,4 +1,7 @@
 FROM tiangolo/uwsgi-nginx-flask:python3.6
+
+LABEL maintainer "bakunas@gmail.com"
+
 RUN pip install pipenv --upgrade
 
 RUN apt-get update -yqq && apt-get install -yqq \

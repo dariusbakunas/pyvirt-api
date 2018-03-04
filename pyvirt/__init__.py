@@ -13,7 +13,7 @@ def create_app(config_name):
 
     with app.app_context():
         from pyvirt.resources.domain import DomainList, Domain
-        api.add_resource(DomainList, '/domain')
-        api.add_resource(Domain, '/domain/<string:uuid>')
+        api.add_resource(DomainList, '/api/domain')
+        api.add_resource(Domain, '/api/domain/<string:uuid>')
 
     return app
