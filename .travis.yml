@@ -1,7 +1,12 @@
 sudo: required
 language: python
+python:
+    - "3.6"
 services:
   - docker
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libvirt-dev
 install:
   - pip install pipenv --upgrade
   - pipenv install --dev
