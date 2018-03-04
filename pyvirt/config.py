@@ -16,6 +16,7 @@ class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
     TESTING = True
     DEBUG = True
+    XEN_URI = 'TEST XEN URI'
 
 
 class ProductionConfig(Config):
