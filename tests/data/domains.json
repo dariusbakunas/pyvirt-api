@@ -1,0 +1,4 @@
+[
+  { "ID": 0, "name": "Test domain 1", "UUIDString": "a110ff96-be94-4537-b181-87b018f3ce1b", "isActive": 1 },
+  { "ID": 1, "name": "Test domain 2", "UUIDString": "078595d8-aa41-45de-a58a-e21f18c7f91c", "isActive": 2 }
+]

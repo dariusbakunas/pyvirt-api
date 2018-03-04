@@ -6,7 +6,10 @@ name = "pypi"
 
 
 [dev-packages]
+
 pytest = "*"
+pytest-mock = "*"
+
 
 [packages]
 
@@ -14,6 +17,7 @@ flask = "*"
 libvirt-python = "*"
 marshmallow = "*"
 flask-restful = "*"
+blinker = "*"
 
 
 [requires]

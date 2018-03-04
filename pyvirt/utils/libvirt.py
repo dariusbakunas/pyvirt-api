@@ -14,6 +14,7 @@ def get_virtconn():
             sys.exit(1)
     return conn
 
+
 @app.teardown_appcontext
 def teardown_virtconn(exception):
     conn = getattr(g, '_virtconn', None)

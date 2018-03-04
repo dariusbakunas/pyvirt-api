@@ -2,8 +2,7 @@
 import sys
 from flask import jsonify
 from flask_restful import Resource
-from pyvirt.model.domain import Domain as DomainModel, DomainSchema
-from pyvirt.utils.virtconn import get_virtconn
+from pyvirt.utils.libvirt import get_virtconn
 from werkzeug.local import LocalProxy
 
 
@@ -11,20 +10,9 @@ class DomainList(Resource):
     def get(self):
         conn = LocalProxy(get_virtconn)
         try:
-            schema = DomainSchema(many=True)
             virt_domains = conn.listAllDomains()
-            domains = schema.dump(
-                [
-                    DomainModel(
-                        id=d.ID,
-                        name=d.name,
-                        uuid=d.UUIDString,
-                        is_active=d.isActive
-                    ) for d in virt_domains
-                ]
-            )
-
-            return jsonify(domains.data)
+            response = [{"id": d.ID(), "name": d.name(), "uuid": d.UUIDString(), "isActive": d.isActive()} for d in virt_domains]
+            return jsonify(response)
         except:
             print('Failed to find the main domain')
             sys.exit(1)
