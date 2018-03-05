@@ -1,13 +1,20 @@
 version: '3'
 services:
   pyvirt:
+    image: dariusbakunas/pyvirt-api:latest
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     environment:
      - FLASK_CONFIGURATION=development
     container_name: pyvirt-api
-    build: .
     ports:
      - "9999:80"
     volumes:
      - /etc/pki/libvirt:/etc/pki/libvirt
      - /etc/pki/CA:/etc/pki/CA
      - ./instance:/app/instance
+  watchtower:
+    image: v2tec/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 60
