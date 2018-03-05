@@ -16,6 +16,6 @@ before_deploy:
     - docker build -t dariusbakunas/pyvirt-api .
 deploy:
     provider: script
-    script: scripts/deploy.sh
+    script: ./scripts/deploy.sh
     on:
         branch: master
