@@ -2,8 +2,6 @@ version: '3'
 services:
   pyvirt:
     image: dariusbakunas/pyvirt-api:latest
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     environment:
      - FLASK_CONFIGURATION=development
     container_name: pyvirt-api
