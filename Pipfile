@@ -18,6 +18,7 @@ libvirt-python = "*"
 marshmallow = "*"
 flask-restful = "*"
 blinker = "*"
+graphene = "*"
 
 
 [requires]
