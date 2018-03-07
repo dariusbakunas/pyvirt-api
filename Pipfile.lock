@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "449ecbb1b2db6571044b265031c48730ad5f34ec1774f8d7d34d5572bcf51608"
+            "sha256": "5abe4bd3dd7cb400da6320378a2b499398e896c5582a26cead2fb430adc461ac"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -98,9 +98,9 @@
         },
         "libvirt-python": {
             "hashes": [
-                "sha256:dec2a33d68779672b4688b296d6de18c9c41b89d8c74c9d3dc887e366587b8c7"
+                "sha256:31983cf6f47c6fc2f3a53edd10e8d0961c9ab27cafc76f274cd06b774f0496a8"
             ],
-            "version": "==4.1.0"
+            "version": "==4.0.0"
         },
         "markupsafe": {
             "hashes": [

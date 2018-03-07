@@ -14,7 +14,7 @@ pytest-mock = "*"
 [packages]
 
 flask = "*"
-libvirt-python = "*"
+libvirt-python = "==4.0.0"
 marshmallow = "*"
 flask-restful = "*"
 blinker = "*"
