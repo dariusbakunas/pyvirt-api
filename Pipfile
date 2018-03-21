@@ -13,11 +13,12 @@ pytest-mock = "*"
 
 [packages]
 
-Flask = "*"
+flask = "*"
 libvirt-python = "==4.0.0"
 marshmallow = "*"
-Flask-RESTful = "*"
+flask-restful = "*"
 blinker = "*"
+flask-socketio = "*"
 
 
 [requires]
