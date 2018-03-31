@@ -36,7 +36,7 @@ def main():
         cb=lambda *args: event_cb(socketio, *args)
     )
 
-    socketio.run(app, port=5555, use_reloader=False, debug=True)
+    socketio.run(app, port=app.config['PORT'] or 80, use_reloader=False, debug=True)
 
 
 if __name__ == '__main__':
