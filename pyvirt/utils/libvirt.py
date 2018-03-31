@@ -8,7 +8,7 @@ from flask import g
 from flask import current_app as app
 
 
-class LibvirtConnector:
+class LibvirtEventConnector:
     def __init__(self):
         self.cb = None
 
@@ -65,8 +65,6 @@ def get_virtconn():
     current application context.
     """
     if not hasattr(g, 'libvirt_conn'):
-        g.libvirt_conn = LibvirtConnector()
-        g.libvirt_conn.start_event_loop()
-        g.libvirt_conn.connect(app.config['XEN_URI'])
+        g.libvirt_conn = libvirt.openReadOnly(app.config['XEN_URI'])
 
     return g.libvirt_conn

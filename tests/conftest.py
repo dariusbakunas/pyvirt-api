@@ -5,7 +5,7 @@ from pyvirt import create_app
 
 @pytest.fixture()
 def client(mocker, request):
-    mocker.patch('libvirt.openReadOnly', return_value=getattr(request.cls, "libvirt_client"))
+    mocker.patch('libvirt.openReadOnly', return_value=getattr(request.cls, 'libvirt_client'))
     app = create_app('testing')
 
     def teardown():

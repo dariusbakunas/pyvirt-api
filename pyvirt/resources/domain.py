@@ -18,7 +18,7 @@ class DomainList(Resource):
                 "isActive": d.isActive()
             } for d in virt_domains]
             return jsonify(response)
-        except:
+        except Exception as e:
             print('Failed to find the main domain')
             sys.exit(1)
 
