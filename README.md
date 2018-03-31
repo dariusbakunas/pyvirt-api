@@ -8,6 +8,6 @@
 
 * Create instance/config.py file at project root:
 
-    ```
+    ```bash
     XEN_URI = 'xen://...'
     ```

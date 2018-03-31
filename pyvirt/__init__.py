@@ -1,7 +1,8 @@
 # coding=utf-8
 from flask import Flask
-from flask_restful import Api
 from pyvirt.config import app_config
+from flask_restful import Api
+from pyvirt.resources.domain import DomainList, Domain
 
 
 def create_app(config_name):
@@ -10,10 +11,7 @@ def create_app(config_name):
     app.config.from_pyfile('config.py', silent=True)
 
     api = Api(app)
-
-    with app.app_context():
-        from pyvirt.resources.domain import DomainList, Domain
-        api.add_resource(DomainList, '/api/domain')
-        api.add_resource(Domain, '/api/domain/<string:uuid>')
+    api.add_resource(DomainList, '/api/domain')
+    api.add_resource(Domain, '/api/domain/<string:uuid>')
 
     return app

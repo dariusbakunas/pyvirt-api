@@ -11,9 +11,14 @@ class DomainList(Resource):
         conn = LocalProxy(get_virtconn)
         try:
             virt_domains = conn.listAllDomains()
-            response = [{"id": d.ID(), "name": d.name(), "uuid": d.UUIDString(), "isActive": d.isActive()} for d in virt_domains]
+            response = [{
+                "id": d.ID(),
+                "name": d.name(),
+                "uuid": d.UUIDString(),
+                "isActive": d.isActive()
+            } for d in virt_domains]
             return jsonify(response)
-        except:
+        except Exception as e:
             print('Failed to find the main domain')
             sys.exit(1)
 
