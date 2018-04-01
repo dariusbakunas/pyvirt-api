@@ -35,6 +35,7 @@ def on_io_connect():
 def on_io_disconnect():
     app.logger.info('SocketIO client disconnected')
 
+
 def main():
     app.logger.info(config_name)
 

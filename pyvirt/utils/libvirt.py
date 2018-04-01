@@ -41,7 +41,7 @@ class LibvirtEventConnector:
         self.conn.setKeepAlive(5, 3)
 
         if self.conn is None:
-            print('Failed to open connection to the hypervisor')
+            app.logger.error('failed to open connection to the hypervisor')
             sys.exit(1)
 
     def register_event_cb(self, cb):
