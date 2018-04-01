@@ -2,30 +2,10 @@
 import os
 from pyvirt import create_app
 from flask import g
-from flask_socketio import SocketIO
-from pyvirt.resources.events import event_cb
-from pyvirt.utils.libvirt import LibvirtEventConnector
 
-# Set this variable to "threading", "eventlet" or "gevent" to test the
-# different async modes, or leave it set to None for the application to choose
-# the best option based on installed packages.
-async_mode = None
 
 config_name = os.getenv('FLASK_CONFIGURATION', 'development')
-app = create_app(config_name)
-
-socketio = SocketIO(
-        app=app,
-        async_mode=async_mode)
-
-app.logger.info(config_name)
-
-conn = LibvirtEventConnector(logger=app.logger)
-conn.start_event_loop()
-conn.connect(app.config['XEN_URI'])
-conn.register_event_cb(
-    cb=lambda *args: event_cb(socketio, app.logger, *args)
-)
+app, socketio = create_app(config_name)
 
 @app.teardown_appcontext
 def teardown_conn(exception):

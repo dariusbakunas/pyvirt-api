@@ -8,10 +8,14 @@ from flask import current_app as app
 
 
 class DomainList(Resource):
+    @classmethod
+    def set_libvirt_conn(cls, conn):
+        cls.conn = conn
+        return cls
+
     def get(self):
-        conn = LocalProxy(get_virtconn)
         try:
-            virt_domains = conn.listAllDomains()
+            virt_domains = self.conn.listAllDomains()
             response = [{
                 "id": d.ID(),
                 "name": d.name(),
