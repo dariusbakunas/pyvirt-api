@@ -5,13 +5,13 @@ import sys
 import libvirtaio
 import asyncio
 from flask import g
-from flask import current_app as app
 
 
 class LibvirtEventConnector:
-    def __init__(self):
+    def __init__(self, logger):
         self.cb = None
         self.conn = None
+        self.logger = logger
 
     def _aio_loop(self, loop):
         import asyncio
@@ -22,8 +22,7 @@ class LibvirtEventConnector:
         reasonStrings = (
             "Error", "End-of-file", "Keepalive", "Client",
         )
-        app.logger.info("closing libvirt connection: %s: %s" % (
-        conn.getURI(), reasonStrings[reason]))
+        self.logger.info("closing libvirt connection: %s: %s" % (conn.getURI(), reasonStrings[reason]))
 
     def start_event_loop(self):
         global eventLoopThread
@@ -37,13 +36,13 @@ class LibvirtEventConnector:
         eventLoopThread.start()
 
     def connect(self, uri):
-        app.logger.info('connecting to {}'.format(uri))
+        self.logger.info('connecting to {}'.format(uri))
         self.conn = libvirt.openReadOnly(uri)
         self.conn.registerCloseCallback(self._close_conn_cb, None)
         self.conn.setKeepAlive(5, 3)
 
         if self.conn is None:
-            app.logger.error('failed to open connection to the hypervisor')
+            # app.logger.error('failed to open connection to the hypervisor')
             sys.exit(1)
 
     def register_event_cb(self, cb):
@@ -55,7 +54,7 @@ class LibvirtEventConnector:
 
     def disconnect(self):
         if self.conn is not None:
-            app.logger.info("Closing " + self.conn.getURI())
+            self.logger.info("Closing " + self.conn.getURI())
             if self.cb is not None:
                 self.conn.domainEventDeregister(self.cb)
             self.conn.unregisterCloseCallback()

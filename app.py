@@ -18,6 +18,15 @@ socketio = SocketIO(
         app=app,
         async_mode=async_mode)
 
+app.logger.info(config_name)
+
+conn = LibvirtEventConnector(logger=app.logger)
+conn.start_event_loop()
+conn.connect(app.config['XEN_URI'])
+conn.register_event_cb(
+    cb=lambda *args: event_cb(socketio, *args)
+)
+
 @app.teardown_appcontext
 def teardown_conn(exception):
     conn = getattr(g, 'libvirt_conn', None)
@@ -35,18 +44,9 @@ def on_io_disconnect():
     app.logger.info('SocketIO client disconnected')
 
 
-# def main():
-#     app.logger.info(config_name)
-#
-#     conn = LibvirtEventConnector()
-#     conn.start_event_loop()
-#     conn.connect(app.config['XEN_URI'])
-#     conn.register_event_cb(
-#         cb=lambda *args: event_cb(socketio, *args)
-#     )
-#
-#     socketio.run(app, port=app.config['PORT'] or 80, use_reloader=False, debug=True)
-#
-#
-# if __name__ == '__main__':
-#     main()
+def main():
+    socketio.run(app, port=app.config['PORT'] or 80, use_reloader=False, debug=True)
+
+
+if __name__ == '__main__':
+    main()
