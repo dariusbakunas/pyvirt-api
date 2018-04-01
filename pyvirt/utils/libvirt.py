@@ -21,7 +21,7 @@ class LibvirtEventConnector:
         reasonStrings = (
             "Error", "End-of-file", "Keepalive", "Client",
         )
-        print("myConnectionCloseCallback: %s: %s" % (
+        app.logger.info("closing libvirt connection: %s: %s" % (
         conn.getURI(), reasonStrings[reason]))
 
     def start_event_loop(self):
@@ -53,7 +53,7 @@ class LibvirtEventConnector:
 
     def disconnect(self):
         if self.conn is not None:
-            print("Closing " + self.conn.getURI())
+            app.logger.info("Closing " + self.conn.getURI())
             if self.cb is not None:
                 self.conn.domainEventDeregister(self.cb)
             self.conn.unregisterCloseCallback()

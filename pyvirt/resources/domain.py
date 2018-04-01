@@ -4,6 +4,7 @@ from flask import jsonify
 from flask_restful import Resource
 from pyvirt.utils.libvirt import get_virtconn
 from werkzeug.local import LocalProxy
+from flask import current_app as app
 
 
 class DomainList(Resource):
@@ -19,7 +20,7 @@ class DomainList(Resource):
             } for d in virt_domains]
             return jsonify(response)
         except Exception as e:
-            print('Failed to find the main domain')
+            app.logger.error('failed to open libvirt connection')
             sys.exit(1)
 
     def post(self):
