@@ -5,6 +5,7 @@ import sys
 import libvirtaio
 import asyncio
 from flask import g
+from flask import current_app as app
 
 
 class LibvirtEventConnector:
