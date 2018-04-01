@@ -18,7 +18,6 @@ socketio = SocketIO(
         app=app,
         async_mode=async_mode)
 
-
 @app.teardown_appcontext
 def teardown_conn(exception):
     conn = getattr(g, 'libvirt_conn', None)
