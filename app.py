@@ -26,6 +26,15 @@ def teardown_conn(exception):
         conn.close()
 
 
+@socketio.on('connect', namespace='/libvirt')
+def on_io_connect():
+    app.logger.info('SocketIO client connected')
+
+
+@socketio.on('disconnect', namespace='/libvirt')
+def on_io_disconnect():
+    app.logger.info('SocketIO client disconnected')
+
 def main():
     app.logger.info(config_name)
 
