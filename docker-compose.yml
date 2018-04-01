@@ -6,7 +6,7 @@ services:
      - FLASK_CONFIGURATION=development
     container_name: pyvirt-api
     ports:
-     - "9999:80"
+     - 3031:3031
     volumes:
      - /etc/pki/libvirt:/etc/pki/libvirt:ro
      - /etc/pki/CA:/etc/pki/CA:ro
@@ -18,4 +18,4 @@ services:
     depends_on:
       - pyvirt-uwsgi
     ports:
-      - 80:80
+      - 80:9999
