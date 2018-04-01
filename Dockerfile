@@ -13,7 +13,7 @@ COPY Pipfile.lock Pipfile.lock
 
 RUN pipenv install --system --deploy
 
-EXPOSE 3031
+EXPOSE 3031 3032
 COPY . /app
 
 CMD [ "uwsgi", "uwsgi.ini"]

@@ -7,17 +7,16 @@ services:
     container_name: pyvirt-api-uwsgi
     ports:
      - 3031:3031
+     - 3032:3032
     volumes:
      - /etc/pki/libvirt:/etc/pki/libvirt:ro
      - /etc/pki/CA:/etc/pki/CA:ro
      - ./instance:/app/instance:ro
-     - ./sock:/sock
   nginx:
     image: nginx:1.13-alpine
     container_name: pyvirt-api-nginx
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./sock:/sock
     depends_on:
       - uwsgi
     ports:
