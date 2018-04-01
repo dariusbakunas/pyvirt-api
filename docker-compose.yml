@@ -5,6 +5,8 @@ services:
     environment:
      - FLASK_CONFIGURATION=development
     container_name: pyvirt-api-uwsgi
+    ports:
+     - 3031:3031
     volumes:
      - /etc/pki/libvirt:/etc/pki/libvirt:ro
      - /etc/pki/CA:/etc/pki/CA:ro
