@@ -65,13 +65,3 @@ class LibvirtEventConnector:
                 self.conn.domainEventDeregister(self.cb)
             self.conn.unregisterCloseCallback()
             self.conn.close()
-
-
-def get_virtconn():
-    """Opens a new libvirt connection if there is none yet for the
-    current application context.
-    """
-    if not hasattr(g, 'libvirt_conn'):
-        g.libvirt_conn = libvirt.openReadOnly(app.config['XEN_URI'])
-
-    return g.libvirt_conn

@@ -1,17 +1,10 @@
 # coding=utf-8
 import os
 from pyvirt import create_app
-from flask import g
 
 
 config_name = os.getenv('FLASK_CONFIGURATION', 'development')
 app, socketio = create_app(config_name)
-
-@app.teardown_appcontext
-def teardown_conn(exception):
-    conn = getattr(g, 'libvirt_conn', None)
-    if conn is not None:
-        conn.close()
 
 
 @socketio.on('connect', namespace='/libvirt')
