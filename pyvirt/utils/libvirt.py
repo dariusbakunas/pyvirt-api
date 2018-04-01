@@ -7,6 +7,8 @@ import asyncio
 from flask import g
 from flask import current_app as app
 
+eventLoopThread = None
+
 
 class LibvirtEventConnector:
     def __init__(self, logger):
@@ -15,7 +17,6 @@ class LibvirtEventConnector:
         self.logger = logger
 
     def _aio_loop(self, loop):
-        import asyncio
         asyncio.set_event_loop(loop)
         loop.run_forever()
 
@@ -43,7 +44,7 @@ class LibvirtEventConnector:
         self.conn.setKeepAlive(5, 3)
 
         if self.conn is None:
-            # app.logger.error('failed to open connection to the hypervisor')
+            self.logger.error('failed to open connection to the hypervisor')
             sys.exit(1)
 
     def register_event_cb(self, cb):
