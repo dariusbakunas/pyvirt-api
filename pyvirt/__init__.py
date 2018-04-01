@@ -27,7 +27,7 @@ def create_app(config_name):
         cb=lambda *args: event_cb(socketio, app.logger, *args)
     )
 
-    DomainList.set_libvirt_conn(conn)
+    DomainList.set_libvirt_conn(conn.libvirt_conn)
 
     api = Api(app)
     api.add_resource(DomainList, '/api/domain')

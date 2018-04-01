@@ -16,6 +16,10 @@ class LibvirtEventConnector:
         self.conn = None
         self.logger = logger
 
+    @property
+    def libvirt_conn(self):
+        return self.conn
+
     def _aio_loop(self, loop):
         asyncio.set_event_loop(loop)
         loop.run_forever()
