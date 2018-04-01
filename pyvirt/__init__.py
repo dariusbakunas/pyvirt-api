@@ -3,7 +3,7 @@ from flask import Flask
 from pyvirt.config import app_config
 from flask_restful import Api
 from flask_socketio import SocketIO
-from pyvirt.resources.domain import DomainList, Domain
+from pyvirt.resources.domain import DomainList
 from pyvirt.resources.events import event_cb
 from pyvirt.utils.libvirt import LibvirtEventConnector
 
@@ -31,7 +31,6 @@ def create_app(config_name):
 
     api = Api(app)
     api.add_resource(DomainList, '/api/domain')
-    api.add_resource(Domain, '/api/domain/<string:uuid>')
 
     socketio = SocketIO(
         app=app,
