@@ -4,7 +4,7 @@ LABEL maintainer "bakunas@gmail.com"
 RUN apt-get update -yqq && apt-get install -yqq \
 	libvirt-dev python-pip
 
-RUN UWSGI_PROFILE="asyncio" pip3 install uwsgi
+RUN UWSGI_PROFILE="asyncio" pip3 install greenlet uwsgi
 
 RUN pip install pipenv --upgrade
 
