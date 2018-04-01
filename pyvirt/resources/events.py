@@ -1,5 +1,4 @@
 # coding=utf-8
-from flask import current_app as app
 
 
 def dom_event_to_string(event):
@@ -32,9 +31,9 @@ def dom_detail_to_string(event, detail):
     return domEventStrings[event][detail]
 
 
-def event_cb(socketio, conn, dom, event, detail, opaque):
+def event_cb(socketio, logger, conn, dom, event, detail, opaque):
     event_str = dom_event_to_string(event)
-    app.logger.info('emitting libvirt event: {}', event_str)
+    logger.info('emitting libvirt event: {}', event_str)
     socketio.emit('libvirt_event', {
         'event': dom_event_to_string(event),
         'detail': dom_detail_to_string(event, detail),

@@ -24,7 +24,7 @@ conn = LibvirtEventConnector(logger=app.logger)
 conn.start_event_loop()
 conn.connect(app.config['XEN_URI'])
 conn.register_event_cb(
-    cb=lambda *args: event_cb(socketio, *args)
+    cb=lambda *args: event_cb(socketio, app.logger, *args)
 )
 
 @app.teardown_appcontext
