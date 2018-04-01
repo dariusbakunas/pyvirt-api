@@ -11,6 +11,7 @@ from flask import current_app as app
 class LibvirtEventConnector:
     def __init__(self):
         self.cb = None
+        self.conn = None
 
     def _aio_loop(self, loop):
         import asyncio
@@ -36,6 +37,7 @@ class LibvirtEventConnector:
         eventLoopThread.start()
 
     def connect(self, uri):
+        app.logger.info('connecting to {}'.format(uri))
         self.conn = libvirt.openReadOnly(uri)
         self.conn.registerCloseCallback(self._close_conn_cb, None)
         self.conn.setKeepAlive(5, 3)
