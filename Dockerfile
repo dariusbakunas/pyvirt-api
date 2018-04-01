@@ -1,11 +1,10 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.6
-
+FROM python:3
 LABEL maintainer "bakunas@gmail.com"
 
-RUN pip install pipenv --upgrade
-
 RUN apt-get update -yqq && apt-get install -yqq \
-	libvirt-dev
+	libvirt-dev python-pip
+
+RUN pip install pipenv --upgrade
 
 WORKDIR /app
 
@@ -14,4 +13,7 @@ COPY Pipfile.lock Pipfile.lock
 
 RUN pipenv install --system --deploy
 
+EXPOSE 3031
 COPY . /app
+
+CMD [ "uwsgi", "uwsgi.ini"]
