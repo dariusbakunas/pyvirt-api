@@ -33,7 +33,7 @@ def dom_detail_to_string(event, detail):
 
 def event_cb(socketio, logger, conn, dom, event, detail, opaque):
     event_str = dom_event_to_string(event)
-    logger.info('emitting libvirt event: {}', event_str)
+    logger.info('emitting libvirt event: {}'.format(event_str))
     socketio.emit('libvirt_event', {
         'event': dom_event_to_string(event),
         'detail': dom_detail_to_string(event, detail),
