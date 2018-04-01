@@ -20,7 +20,6 @@ flask-restful = "*"
 blinker = "*"
 flask-socketio = "*"
 gevent = "*"
-uwsgi = "*"
 
 
 [requires]
