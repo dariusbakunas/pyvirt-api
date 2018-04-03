@@ -11,6 +11,7 @@ from pyvirt.utils.libvirt import LibvirtEventConnector
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
 async_mode = None
+socketio = SocketIO()
 
 
 def create_app(config_name):
@@ -32,8 +33,6 @@ def create_app(config_name):
     api = Api(app)
     api.add_resource(DomainList, '/api/domain')
 
-    socketio = SocketIO(
-        app=app,
-        async_mode=async_mode)
+    socketio.init_app(app, async_mode=async_mode)
 
     return app, socketio
