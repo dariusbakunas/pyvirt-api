@@ -1,4 +1,7 @@
 # coding=utf-8
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 def dom_event_to_string(event):
@@ -31,10 +34,10 @@ def dom_detail_to_string(event, detail):
     return domEventStrings[event][detail]
 
 
-def event_cb(socketio, logger, conn, dom, event, detail, opaque):
+def event_cb(socketio, conn, dom, event, detail, opaque):
     event_str = dom_event_to_string(event)
     logger.info('emitting libvirt event: {}'.format(event_str))
-    socketio.emit('libvirt_event', {
+    socketio.emit('libvirt-event', {
         'event': dom_event_to_string(event),
         'detail': dom_detail_to_string(event, detail),
         'uuid': dom.UUIDString(),

@@ -18,13 +18,13 @@ celery = Celery('bg_tasks', broker=CELERY_BROKER_URL)
 
 @celery.task(name='libvirt.event.loop')
 def task(iomq_url, xen_url):
-    conn = LibvirtEventConnector(logger=logger)
+    conn = LibvirtEventConnector()
     conn.start_native_loop()
     conn.connect(xen_url)
 
     local_socketio = SocketIO(message_queue=iomq_url)
     conn.register_event_cb(
-        cb=lambda *args: event_cb(local_socketio, logger, *args)
+        cb=lambda *args: event_cb(local_socketio, *args)
     )
 
     while True:
