@@ -15,6 +15,10 @@ services:
       - pyvirt
     depends_on:
       - redis
+    volumes:
+      - /etc/pki/libvirt:/etc/pki/libvirt:ro
+      - /etc/pki/CA:/etc/pki/CA:ro
+      - ./instance:/app/instance:ro
   uwsgi:
     build:
       context: .
