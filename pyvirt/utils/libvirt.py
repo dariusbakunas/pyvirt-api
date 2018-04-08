@@ -2,7 +2,6 @@
 import libvirt
 import threading
 import sys
-import libvirtaio
 
 eventLoopThread = None
 
@@ -19,6 +18,7 @@ class LibvirtEventConnector:
 
     def _aio_loop(self, loop):
         import asyncio
+        import libvirtaio
         asyncio.set_event_loop(loop)
         loop.run_forever()
 
@@ -31,7 +31,13 @@ class LibvirtEventConnector:
         libvirt.virEventRegisterDefaultImpl()
         eventLoopThread = threading.Thread(target=self._native_loop, name="libvirtEventLoop")
         eventLoopThread.setDaemon(True)
+        print('HERE')
         eventLoopThread.start()
+        print('AFTER')
+
+    def start_pure_loop(self):              
+        from pyvirt.utils.loop import virEventLoopPureStart
+        virEventLoopPureStart()
 
     def _close_conn_cb(self, conn, reason, opaque):
         reasonStrings = (
@@ -41,6 +47,7 @@ class LibvirtEventConnector:
 
     def start_aio_loop(self):
         import asyncio
+        import libvirtaio
         global eventLoopThread
         loop = asyncio.new_event_loop()
         libvirtaio.virEventRegisterAsyncIOImpl(loop=loop)

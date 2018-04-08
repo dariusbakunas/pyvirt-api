@@ -1,5 +1,6 @@
 # coding=utf-8
 from flask import Flask
+from celery import Celery
 from pyvirt.config import app_config
 from flask_restful import Api
 from flask_socketio import SocketIO
@@ -21,18 +22,19 @@ def create_app(config_name):
 
     app.logger.info(config_name)
 
-    conn = LibvirtEventConnector(logger=app.logger)
-    conn.start_native_loop()
-    conn.connect(app.config['XEN_URI'])
-    conn.register_event_cb(
-        cb=lambda *args: event_cb(socketio, app.logger, *args)
-    )
-
-    DomainList.set_libvirt_conn(conn.libvirt_conn)
+    # conn = LibvirtEventConnector(logger=app.logger)
+    # # conn.start_aio_loop()
+    # conn.start_native_loop()
+    # # conn.start_pure_loop()
+    # conn.connect(app.config['XEN_URI'])
+    # conn.register_event_cb(
+    #     cb=lambda *args: event_cb(socketio, app.logger, *args)
+    # )
 
     api = Api(app)
     api.add_resource(DomainList, '/api/domain')
+    celery = Celery(app.name, broker=app.config['BROKER_URL'])
+    celery.conf.update(app.config)
+    socketio.init_app(app, async_mode=async_mode, message_queue=app.config['REDIS_URL'])
 
-    socketio.init_app(app, async_mode=async_mode)
-
-    return app, socketio
+    return app, socketio, celery

@@ -2,9 +2,7 @@ FROM python:3
 LABEL maintainer "bakunas@gmail.com"
 
 RUN apt-get update -yqq && apt-get install -yqq \
-	libvirt-dev python-pip python-greenlet-dev
-
-RUN UWSGI_PROFILE="asyncio" pip3 install greenlet uwsgi
+	libvirt-dev python-pip
 
 RUN pip install pipenv --upgrade
 
@@ -15,7 +13,7 @@ COPY Pipfile.lock Pipfile.lock
 
 RUN pipenv install --system --deploy
 
-EXPOSE 3031 3032
+EXPOSE 8000
 COPY . /app
 
-CMD [ "uwsgi", "uwsgi.ini"]
+CMD [ "gunicorn", "-c", "gunicorn.py", "app:app"]

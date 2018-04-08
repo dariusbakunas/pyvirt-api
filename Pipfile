@@ -20,6 +20,9 @@ flask-restful = "*"
 blinker = "*"
 flask-socketio = "*"
 gevent = "*"
+gunicorn = "*"
+eventlet = "*"
+celery = "*"
 
 
 [requires]
