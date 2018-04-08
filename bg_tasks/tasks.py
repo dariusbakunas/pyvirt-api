@@ -5,8 +5,8 @@ from celery import Celery
 from flask_socketio import SocketIO
 from celery.utils.log import get_task_logger
 
-from bg_tasks.events import event_cb
-from bg_tasks.libvirt import LibvirtEventConnector
+from .events import event_cb
+from .libvirt import LibvirtEventConnector
 
 logger = get_task_logger(__name__)
 
