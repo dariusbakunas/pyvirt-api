@@ -1,7 +1,7 @@
 # coding=utf-8
 import os
 from pyvirt import create_app
-from bg_tasks.tasks import task
+from bg_tasks.tasks import start_libvirt_loop_task
 
 config_name = os.getenv('FLASK_CONFIGURATION', 'development')
 app, socketio = create_app(config_name)
@@ -12,7 +12,7 @@ bg_task = None
 def on_io_connect():
     global bg_task
     app.logger.info('SocketIO client connected')
-    bg_task = task.delay(app.config['REDIS_URL'], app.config['XEN_URI'])
+    bg_task = start_libvirt_loop_task.delay(app.config['REDIS_URL'], app.config['XEN_URI'])
 
 
 @socketio.on('disconnect', namespace='/libvirt')
