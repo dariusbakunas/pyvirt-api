@@ -18,7 +18,7 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 #
 # Worker processes
 #
-#   workers - The number of worker processes that this server
+#   workers - The number of bg_tasks processes that this server
 #       should keep alive for handling requests.
 #
 #       A positive integer generally in the 2-4 x $(NUM_CORES)
@@ -30,7 +30,7 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 #       loads. You'll want to read
 #       http://docs.gunicorn.org/en/latest/design.html#choosing-a-worker-type
 #       for information on when you might want to choose one
-#       of the other worker classes.
+#       of the other bg_tasks classes.
 #
 #       An string referring to a 'gunicorn.workers' entry point
 #       or a python path to a subclass of
@@ -42,19 +42,19 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 #           egg:gunicorn#gevent     - Requires gevent >= 0.12.2 (?)
 #           egg:gunicorn#tornado    - Requires tornado >= 0.2
 #
-#   worker_connections - For the eventlet and gevent worker classes
+#   worker_connections - For the eventlet and gevent bg_tasks classes
 #       this limits the maximum number of simultaneous clients that
 #       a single process can handle.
 #
 #       A positive integer generally set to around 1000.
 #
-#   timeout - If a worker does not notify the master process in this
-#       number of seconds it is killed and a new worker is spawned
+#   timeout - If a bg_tasks does not notify the master process in this
+#       number of seconds it is killed and a new bg_tasks is spawned
 #       to replace it.
 #
 #       Generally set to thirty seconds. Only set this noticeably
 #       higher if you're sure of the repercussions for sync workers.
-#       For the non sync workers it just means that the worker
+#       For the non sync workers it just means that the bg_tasks
 #       process is still communicating and is not tied to the length
 #       of time required to handle a single request.
 #
@@ -75,12 +75,12 @@ spew = False
 #
 # Server hooks
 #
-#   post_fork - Called just after a worker has been forked.
+#   post_fork - Called just after a bg_tasks has been forked.
 #
-#       A callable that takes a server and worker instance
+#       A callable that takes a server and bg_tasks instance
 #       as arguments.
 #
-#   pre_fork - Called just prior to forking the worker subprocess.
+#   pre_fork - Called just prior to forking the bg_tasks subprocess.
 #
 #       A callable that accepts the same arguments as after_fork
 #
@@ -103,7 +103,7 @@ def when_ready(server):
     server.log.info("Server is ready. Spawning workers")
 
 def worker_int(worker):
-    worker.log.info("worker received INT or QUIT signal")
+    worker.log.info("bg_tasks received INT or QUIT signal")
 
     ## get traceback info
     import threading, sys, traceback
@@ -120,4 +120,4 @@ def worker_int(worker):
     worker.log.debug("\n".join(code))
 
 def worker_abort(worker):
-    worker.log.info("worker received SIGABRT signal")
+    worker.log.info("bg_tasks received SIGABRT signal")

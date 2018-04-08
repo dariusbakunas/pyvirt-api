@@ -9,6 +9,8 @@ from flask import current_app as app
 class DomainList(Resource):
     def get(self):
         with app.app_context():
+            conn = None
+
             try:
                 conn = libvirt.openReadOnly(app.config['XEN_URI'])
                 virt_domains = conn.listAllDomains()
@@ -23,4 +25,5 @@ class DomainList(Resource):
                 app.logger.error('failed to open libvirt connection')
                 sys.exit(1)
             finally:
-                conn.close()
+                if conn:
+                    conn.close()

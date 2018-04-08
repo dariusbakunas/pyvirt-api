@@ -36,8 +36,6 @@ def create_app(config_name):
 
     api = Api(app)
     api.add_resource(DomainList, '/api/domain')
-    celery = Celery(app.name, broker=app.config['BROKER_URL'])
-    celery.conf.update(app.config)
     socketio.init_app(app, async_mode=async_mode, message_queue=app.config['REDIS_URL'])
 
-    return app, socketio, celery
+    return app, socketio
