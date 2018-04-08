@@ -2,8 +2,6 @@ version: '3'
 services:
   redis:
     image: redis:3
-    ports:
-      - 6379:6379
     networks:
       - pyvirt
     environment:
@@ -16,8 +14,6 @@ services:
     environment:
       - FLASK_CONFIGURATION=development
     container_name: pyvirt-api-uwsgi
-    ports:
-      - 9990:8000
     depends_on:
       - redis
     volumes:
