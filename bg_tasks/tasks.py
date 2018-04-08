@@ -5,7 +5,7 @@ from celery import Celery
 from flask_socketio import SocketIO
 
 env = os.environ
-CELERY_BROKER_URL=env.get('CELERY_BROKER_URL', 'redis://localhost:6379'),
+CELERY_BROKER_URL=env.get('CELERY_BROKER_URL', 'redis://redis:6379/0'),
 
 celery = Celery('bg_tasks', broker=CELERY_BROKER_URL)
 

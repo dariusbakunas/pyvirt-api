@@ -8,7 +8,7 @@ RUN pip install pipenv --upgrade
 
 WORKDIR /worker
 
-ENV CELERY_BROKER_URL redis://redis:6379/0
+ENV CELERY_BROKER_URL=redis://redis:6379/0
 
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
@@ -17,4 +17,5 @@ RUN pipenv install --system --deploy
 
 COPY bg_tasks/ /worker
 
-ENTRYPOINT celery -A tasks worker --loglevel=info
+ENTRYPOINT ['celery']
+CMD ['-A','tasks', 'worker','--loglevel=info']
