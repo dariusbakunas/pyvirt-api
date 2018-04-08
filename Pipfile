@@ -23,6 +23,7 @@ gevent = "*"
 gunicorn = "*"
 eventlet = "*"
 celery = "*"
+redis = "*"
 
 
 [requires]
