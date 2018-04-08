@@ -4,7 +4,7 @@ from pyvirt import create_app
 from pyvirt.tasks.libvirt_task import task
 
 config_name = os.getenv('FLASK_CONFIGURATION', 'development')
-app, socketio = create_app(config_name)
+app, socketio, celery = create_app(config_name)
 
 
 @socketio.on('connect', namespace='/libvirt')
