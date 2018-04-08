@@ -17,5 +17,4 @@ RUN pipenv install --system --deploy
 
 COPY bg_tasks/ /worker
 
-ENTRYPOINT ['celery']
-CMD ['-A','tasks', 'worker','--loglevel=info']
+ENTRYPOINT celery -A tasks worker --loglevel=info
