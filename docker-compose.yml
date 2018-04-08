@@ -4,10 +4,9 @@ services:
     image: redis
     networks:
       - pyvirt
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
     container_name: pyvirt-api-redis
   worker:
+    container_name: pyvirt-api-worker
     build:
       context: .
       dockerfile: bg_tasks/Dockerfile
