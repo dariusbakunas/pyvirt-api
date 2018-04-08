@@ -27,3 +27,8 @@ def start_libvirt_loop_task(iomq_url, xen_url):
     conn.register_event_cb(
         cb=lambda *args: event_cb(local_socketio, *args)
     )
+
+
+@celery.task(name='libvirt.event.loop.stop')
+def stop_libvirt_loop_task():
+    conn.disconnect()
