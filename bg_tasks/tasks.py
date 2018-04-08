@@ -3,6 +3,12 @@ import os
 import time
 from celery import Celery
 from flask_socketio import SocketIO
+from celery.utils.log import get_task_logger
+
+from bg_tasks.events import event_cb
+from bg_tasks.libvirt import LibvirtEventConnector
+
+logger = get_task_logger(__name__)
 
 env = os.environ
 CELERY_BROKER_URL=env.get('CELERY_BROKER_URL', 'redis://redis:6379/0'),
@@ -11,8 +17,15 @@ celery = Celery('bg_tasks', broker=CELERY_BROKER_URL)
 
 
 @celery.task(name='libvirt.event.loop')
-def task(url):
-    local_socketio = SocketIO(message_queue=url)
-    local_socketio.emit('libvirt-event', {'data': 'background task starting ...'}, namespace='/libvirt')
-    time.sleep(10)
-    local_socketio.emit('libvirt-event', {'data': 'background task complete!'}, namespace='/libvirt')
+def task(iomq_url, xen_url):
+    conn = LibvirtEventConnector(logger=logger)
+    conn.start_native_loop()
+    conn.connect(xen_url)
+
+    local_socketio = SocketIO(message_queue=iomq_url)
+    conn.register_event_cb(
+        cb=lambda *args: event_cb(local_socketio, logger, *args)
+    )
+
+    while True:
+        time.sleep(1)

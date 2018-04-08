@@ -10,7 +10,7 @@ app, socketio = create_app(config_name)
 @socketio.on('connect', namespace='/libvirt')
 def on_io_connect():
     app.logger.info('SocketIO client connected')
-    task.delay(app.config['REDIS_URL'])
+    task.delay(app.config['REDIS_URL'], app.config['XEN_URL'])
 
 
 @socketio.on('disconnect', namespace='/libvirt')
