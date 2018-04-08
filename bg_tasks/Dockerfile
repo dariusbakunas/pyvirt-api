@@ -8,6 +8,8 @@ RUN pip install pipenv --upgrade
 
 WORKDIR /worker
 
+ENV CELERY_BROKER_URL redis://redis:6379/0
+
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
 
