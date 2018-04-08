@@ -6,16 +6,19 @@ from bg_tasks.tasks import task
 config_name = os.getenv('FLASK_CONFIGURATION', 'development')
 app, socketio = create_app(config_name)
 
+bg_task = None
 
 @socketio.on('connect', namespace='/libvirt')
 def on_io_connect():
+    global bg_task
     app.logger.info('SocketIO client connected')
-    task.delay(app.config['REDIS_URL'], app.config['XEN_URI'])
+    bg_task = task.delay(app.config['REDIS_URL'], app.config['XEN_URI'])
 
 
 @socketio.on('disconnect', namespace='/libvirt')
 def on_io_disconnect():
-    task.revoke(terminate=True)
+    if bg_task:
+        bg_task.revoke(terminate=True)
     app.logger.info('SocketIO client disconnected')
 
 
