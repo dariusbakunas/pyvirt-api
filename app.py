@@ -17,8 +17,8 @@ def on_io_connect():
 
 @socketio.on('disconnect', namespace='/libvirt')
 def on_io_disconnect():
-    if bg_task:
-        bg_task.revoke(terminate=True)
+    # if bg_task:
+    #     bg_task.revoke(terminate=True)
     app.logger.info('SocketIO client disconnected')
 
 
