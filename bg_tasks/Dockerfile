@@ -15,6 +15,6 @@ COPY Pipfile.lock Pipfile.lock
 
 RUN pipenv install --system --deploy
 
-COPY bg_tasks/ /worker
+COPY bg_tasks /worker
 
-ENTRYPOINT celery -A tasks worker --loglevel=info
+ENTRYPOINT celery -A bg_tasks.tasks worker --loglevel=info
