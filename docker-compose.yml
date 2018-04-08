@@ -2,16 +2,24 @@ version: '3'
 services:
   redis:
     image: redis:3
+    ports:
+      - 6379:6379
+    networks:
+      - pyvirt
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     container_name: pyvirt-api-redis
   uwsgi:
     image: dariusbakunas/pyvirt-api:latest
+    networks:
+      - pyvirt
     environment:
       - FLASK_CONFIGURATION=development
     container_name: pyvirt-api-uwsgi
     links:
       - redis
+    ports:
+      - 8000:8000
     depends_on:
       - redis
     volumes:
@@ -21,6 +29,8 @@ services:
   nginx:
     image: nginx:1.13-alpine
     container_name: pyvirt-api-nginx
+    networks:
+      - pyvirt
     links:
       - uwsgi
     volumes:
@@ -29,3 +39,6 @@ services:
       - uwsgi
     ports:
       - 9999:9999
+
+networks:
+  pyvirt:
