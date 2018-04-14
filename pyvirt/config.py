@@ -17,6 +17,7 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = True
     XEN_URI = 'TEST XEN URI'
+    REDIS_URL = 'TEST REDIS URI'
 
 
 class ProductionConfig(Config):

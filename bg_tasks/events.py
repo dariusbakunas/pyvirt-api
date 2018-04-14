@@ -1,4 +1,7 @@
 # coding=utf-8
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def dom_event_to_string(event):
@@ -32,7 +35,9 @@ def dom_detail_to_string(event, detail):
 
 
 def event_cb(socketio, conn, dom, event, detail, opaque):
-    socketio.emit('libvirt_event', {
+    event_str = dom_event_to_string(event)
+    logger.info('emitting libvirt event: {}'.format(event_str))
+    socketio.emit('libvirt-event', {
         'event': dom_event_to_string(event),
         'detail': dom_detail_to_string(event, detail),
         'uuid': dom.UUIDString(),

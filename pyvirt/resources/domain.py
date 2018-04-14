@@ -2,41 +2,25 @@
 import sys
 from flask import jsonify
 from flask_restful import Resource
+from flask import current_app as app
+from libvirt import libvirtError
+
 from pyvirt.utils.libvirt import get_virtconn
-from werkzeug.local import LocalProxy
 
 
 class DomainList(Resource):
     def get(self):
-        conn = LocalProxy(get_virtconn)
-        try:
-            virt_domains = conn.listAllDomains()
-            response = [{
-                "id": d.ID(),
-                "name": d.name(),
-                "uuid": d.UUIDString(),
-                "isActive": d.isActive()
-            } for d in virt_domains]
-            return jsonify(response)
-        except Exception as e:
-            print('Failed to find the main domain')
-            sys.exit(1)
-
-    def post(self):
-        pass
-
-
-class Domain(Resource):
-    def get(self, uuid):
-        conn = LocalProxy(get_virtconn)
-        domain = conn.lookupByUUIDString(uuid)
-        info = domain.info()
-        response = {
-            'state': info[0],
-            'maxMem': info[1],
-            'memory': info[2],
-            'nvVirtCpu': info[3],
-            'cpuTime': info[4],
-        }
-
-        return jsonify(response)
+        with app.app_context():
+            try:
+                conn = get_virtconn()
+                virt_domains = conn.listAllDomains()
+                response = [{
+                    "id": d.ID(),
+                    "name": d.name(),
+                    "uuid": d.UUIDString(),
+                    "isActive": d.isActive()
+                } for d in virt_domains]
+                return jsonify(response)
+            except libvirtError as err:
+                app.logger.error('Libvirt err: {}'.format(err))
+                sys.exit(1)

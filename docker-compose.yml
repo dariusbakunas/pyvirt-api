@@ -1,13 +1,51 @@
 version: '3'
 services:
-  pyvirt:
-    image: dariusbakunas/pyvirt-api:latest
+  redis:
+    image: redis
+    networks:
+      - pyvirt
+    container_name: pyvirt-api-redis
+  worker:
+    container_name: pyvirt-api-worker
+    build:
+      context: .
+      dockerfile: bg_tasks/Dockerfile
     environment:
-     - FLASK_CONFIGURATION=development
-    container_name: pyvirt-api
-    ports:
-     - "9999:80"
+      - LOG_LEVEL=DEBUG
+    networks:
+      - pyvirt
+    depends_on:
+      - redis
     volumes:
-     - /etc/pki/libvirt:/etc/pki/libvirt
-     - /etc/pki/CA:/etc/pki/CA
-     - ./instance:/app/instance
+      - /etc/pki/libvirt:/etc/pki/libvirt:ro
+      - /etc/pki/CA:/etc/pki/CA:ro
+      - ./instance:/app/instance:ro
+  uwsgi:
+    build:
+      context: .
+      dockerfile: pyvirt/Dockerfile
+    networks:
+      - pyvirt
+    environment:
+      - FLASK_CONFIGURATION=development
+    container_name: pyvirt-api-uwsgi
+    depends_on:
+      - redis
+    volumes:
+      - /etc/pki/libvirt:/etc/pki/libvirt:ro
+      - /etc/pki/CA:/etc/pki/CA:ro
+      - ./instance:/app/instance:ro
+  nginx:
+    image: nginx:1.13-alpine
+    container_name: pyvirt-api-nginx
+    networks:
+      - pyvirt
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - uwsgi
+    ports:
+      - 9999:9999
+
+networks:
+  pyvirt:

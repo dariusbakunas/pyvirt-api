@@ -20,6 +20,10 @@ Flask-RESTful = "*"
 blinker = "*"
 Flask-SocketIO = "*"
 gevent = "*"
+gunicorn = "*"
+eventlet = "*"
+celery = "*"
+redis = "*"
 
 
 [requires]
