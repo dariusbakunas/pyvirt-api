@@ -3,6 +3,8 @@ import sys
 from flask import jsonify
 from flask_restful import Resource
 from flask import current_app as app
+from libvirt import libvirtError
+
 from pyvirt.utils.libvirt import get_virtconn
 
 
@@ -19,6 +21,6 @@ class DomainList(Resource):
                     "isActive": d.isActive()
                 } for d in virt_domains]
                 return jsonify(response)
-            except Exception as e:
-                app.logger.error('failed to open libvirt connection')
+            except libvirtError as err:
+                app.logger.error('Libvirt err: {}'.format(err))
                 sys.exit(1)

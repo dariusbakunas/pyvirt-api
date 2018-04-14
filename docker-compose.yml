@@ -10,6 +10,8 @@ services:
     build:
       context: .
       dockerfile: bg_tasks/Dockerfile
+    environment:
+      - LOG_LEVEL=debug
     networks:
       - pyvirt
     depends_on:

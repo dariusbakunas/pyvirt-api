@@ -10,17 +10,17 @@ from instance import config
 logger = logging.getLogger(__name__)
 env = os.environ
 
+logging.basicConfig(level=env.get('LOG_LEVEL', 'INFO'))
+
+
 if not config.XEN_URI:
     raise ValueError('XEN_URI must be specified')
 
 if not config.REDIS_URL:
     raise ValueError('REDIS_URL must be specified')
 
-LOG_LEVEL = config.LOG_LEVEL or logging.INFO
-
 
 def main():
-    logging.basicConfig(level=LOG_LEVEL)
     logger.info('Starting background worker..')
     sio = SocketIO(message_queue=config.REDIS_URL)
     conn = LibvirtEventConnector()
