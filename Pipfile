@@ -13,12 +13,12 @@ pytest-mock = "*"
 
 [packages]
 
-flask = "*"
+Flask = "*"
 libvirt-python = "==4.0.0"
 marshmallow = "*"
-flask-restful = "*"
+Flask-RESTful = "*"
 blinker = "*"
-flask-socketio = "*"
+Flask-SocketIO = "*"
 gevent = "*"
 gunicorn = "*"
 eventlet = "*"

@@ -41,6 +41,8 @@ class LibvirtEventConnector:
             logger.error('failed to open connection to the hypervisor')
             sys.exit(1)
 
+        logger.info('connected to {}'.format(uri))
+
     def register_event_cb(self, cb):
         if self.cb is not None:
             self.conn.domainEventDeregister(self.cb)
