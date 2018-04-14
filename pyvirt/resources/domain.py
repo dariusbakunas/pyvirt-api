@@ -1,18 +1,16 @@
 # coding=utf-8
 import sys
-import libvirt
 from flask import jsonify
 from flask_restful import Resource
 from flask import current_app as app
+from pyvirt.utils.libvirt import get_virtconn
 
 
 class DomainList(Resource):
     def get(self):
         with app.app_context():
-            conn = None
-
             try:
-                conn = libvirt.openReadOnly(app.config['XEN_URI'])
+                conn = get_virtconn()
                 virt_domains = conn.listAllDomains()
                 response = [{
                     "id": d.ID(),
@@ -24,6 +22,3 @@ class DomainList(Resource):
             except Exception as e:
                 app.logger.error('failed to open libvirt connection')
                 sys.exit(1)
-            finally:
-                if conn:
-                    conn.close()

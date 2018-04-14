@@ -1,24 +1,29 @@
 # coding=utf-8
 import os
 from pyvirt import create_app
-from bg_tasks.tasks import start_libvirt_loop_task, stop_libvirt_loop_task
+from flask import g
+
 
 config_name = os.getenv('FLASK_CONFIGURATION', 'development')
 app, socketio = create_app(config_name)
 
-bg_task = None
 
 @socketio.on('connect', namespace='/libvirt')
 def on_io_connect():
-    global bg_task
     app.logger.info('SocketIO client connected')
-    start_libvirt_loop_task.delay(app.config['REDIS_URL'], app.config['XEN_URI'])
 
 
 @socketio.on('disconnect', namespace='/libvirt')
 def on_io_disconnect():
-    stop_libvirt_loop_task.delay()
     app.logger.info('SocketIO client disconnected')
+
+
+@app.teardown_appcontext
+def teardown_conn(exception):
+    conn = getattr(g, 'libvirt_conn', None)
+    if conn is not None:
+        app.logger.info('Closing libvirt connection')
+        conn.close()
 
 
 def main():
