@@ -8,7 +8,7 @@ def get_virtconn():
     current application context.
     """
     if not hasattr(g, 'libvirt_conn'):
-        uri = app.config['XEN_URI']
+        uri = app.config['XEN_URL']
         app.logger.info('Opening libvirt connection: {}'.format(uri))
         g.libvirt_conn = libvirt.openReadOnly(uri)
 

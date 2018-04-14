@@ -13,8 +13,8 @@ env = os.environ
 logging.basicConfig(level=env.get('LOG_LEVEL', 'INFO'))
 
 
-if not config.XEN_URI:
-    raise ValueError('XEN_URI must be specified')
+if not config.XEN_URL:
+    raise ValueError('XEN_URL must be specified')
 
 if not config.REDIS_URL:
     raise ValueError('REDIS_URL must be specified')
@@ -25,7 +25,7 @@ def main():
     sio = SocketIO(message_queue=config.REDIS_URL)
     conn = LibvirtEventConnector()
     conn.start_native_loop()
-    conn.connect(config.XEN_URI)
+    conn.connect(config.XEN_URL)
     conn.register_event_cb(
         cb=lambda *args: event_cb(sio, *args)
     )

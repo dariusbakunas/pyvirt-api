@@ -16,8 +16,8 @@ class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
     TESTING = True
     DEBUG = True
-    XEN_URI = 'TEST XEN URI'
-    REDIS_URL = 'TEST REDIS URI'
+    XEN_URL = 'TEST XEN URL'
+    REDIS_URL = 'TEST REDIS URL'
 
 
 class ProductionConfig(Config):

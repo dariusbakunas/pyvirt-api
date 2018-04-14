@@ -9,7 +9,8 @@
 * Create instance/config.py file at project root:
 
     ```bash
-    XEN_URI = 'xen://...'
+    XEN_URL = 'xen://...'
+    REDIS_URI = 'redis://...:6390/0'
     ```
     
 ### Run in docker:
